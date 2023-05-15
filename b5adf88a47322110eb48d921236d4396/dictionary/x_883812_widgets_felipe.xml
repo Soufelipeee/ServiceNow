@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element db_object_id="8e7e38ce47322110eb48d921236d4326" label="Felipe" max_length="40" name="x_883812_widgets_felipe" type="collection">
+        <element attributes="edge_encryption_enabled=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
+        <element default="javascript:current.getTableName();" label="Class" max_length="80" name="sys_class_name" type="sys_class_name"/>
+        <element attributes="edge_encryption_enabled=true" choice="1" label="Choice" max_length="40" name="u_choice" type="choice">
+            <choice/>
+        </element>
+        <element label="Duration" max_length="40" name="u_duration" type="glide_duration"/>
+        <element label="Float" max_length="40" name="u_float" type="float"/>
+        <element label="Number" max_length="40" name="u_number" type="integer"/>
+        <element attributes="edge_encryption_enabled=true" label="String" max_length="60" name="u_string" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="URL" max_length="1024" name="u_url" type="url"/>
+        <index name="index">
+            <element name="sys_class_name"/>
+        </index>
+    </element>
+</database>
