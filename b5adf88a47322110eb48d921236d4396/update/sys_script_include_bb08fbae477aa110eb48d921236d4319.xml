@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_883812_widgets.Estrutura SCRIPT INCLUDE</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>Estrutura SCRIPT INCLUDE</name>
+        <script><![CDATA[var POTUtils = Class.create();
+POTUtils.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
+
+    getLastRecordFiltered: function() {
+
+        var filter = this.getParameter("sysparm_filter");
+        var table = this.getParameter("sysparm_table");
+        var field = this.getParameter("sysparm_field");
+
+        var sys_id = '';
+
+        try {
+
+            var grFiltered = new GlideRecord(table);
+            grFiltered.addEncodedQuery(filter);
+            grFiltered.orderByDesc(field);
+            grFiltered.setLimit(1);
+            grFiltered.query();
+
+            if (grFiltered.next()) {
+                sys_id = grFiltered.sys_id.toString();
+            }
+
+        } catch (err) {
+            gs.addErrorMessage('Script Include [POTUtils] Function [getLastRecordFiltered] error: ' + err);
+        }
+
+        return sys_id;
+    },
+
+    getCounterPartyChoicesGold: function() {
+
+        try {
+
+            var language = this.getParameter('sysparm_language');
+            var query = 'name=x_bdb_5pa_00000221_pinch_operation^element=u_counterparty^language=' + language + '^valueIN' + gs.getProperty('x_bdb_5pa_00000221.pot.counterparty.gold.choices') + '^ORDERBYsequence';
+            var grRecoverChoices = new GlideRecord('sys_choice');
+            grRecoverChoices.addEncodedQuery(query);
+            grRecoverChoices.query();
+            var arr = [];
+            while (grRecoverChoices.next()) {
+                var obj = {
+                    value: grRecoverChoices.getValue('value'),
+                    label: grRecoverChoices.getValue('label')
+                };
+                arr.push(obj);
+            }
+
+        } catch (err) {
+            gs.addErrorMessage('Script Include [POTUtils] Function [getCounterPartyChoicesGold] error: ' + err);
+        }
+
+        return JSON.stringify(arr);
+    },
+
+    getChoicesAjax: function() {
+
+        try {
+
+            var language = this.getParameter('sysparm_language');
+            var operation = this.getParameter('sysparm_operation');
+            var field = this.getParameter('sysparm_field');
+            var property;
+
+            switch (operation) {
+					case gs.getProperty('x_bdb_5pa_00000221.pot.operation.gold'):
+					if (field == 'u_operation_nature'){
+						property = 'x_bdb_5pa_00000221.pot.operation.gold.nature.choices';
+						break;
+					}else{
+						property = 'x_bdb_5pa_00000221.pot.operation.gold.counterparty.choices';
+						break;
+					}
+            }
+
+            var query = 'name=x_bdb_5pa_00000221_pinch_operation^element=' + field + '^language=' + language + '^valueIN' + gs.getProperty(property) + '^ORDERBYsequence';
+            var grRecoverChoices = new GlideRecord('sys_choice');
+            grRecoverChoices.addEncodedQuery(query);
+            grRecoverChoices.query();
+            var arr = [];
+            while (grRecoverChoices.next()) {
+                var obj = {
+                    value: grRecoverChoices.getValue('value'),
+                    label: grRecoverChoices.getValue('label')
+                };
+                arr.push(obj);
+            }
+
+        } catch (err) {
+            gs.addErrorMessage('Script Include [POTUtils] Function [getOperationChoicesGold] error: ' + err);
+        }
+
+        return JSON.stringify(arr);
+    },
+
+    recoverOperationChoices: function() {
+
+        try {
+
+            var language = this.getParameter('sysparm_language');
+            var query = 'name=x_bdb_5pa_00000221_pinch_operation^element=u_operation_nature^language=' + language + '^ORDERBYsequence';
+            var grRecoverChoices = new GlideRecord('sys_choice');
+            grRecoverChoices.addEncodedQuery(query);
+            grRecoverChoices.query();
+            var arr = [];
+            while (grRecoverChoices.next()) {
+                var obj = {
+                    value: grRecoverChoices.getValue('value'),
+                    label: grRecoverChoices.getValue('label')
+                };
+                arr.push(obj);
+            }
+
+        } catch (err) {
+            gs.addErrorMessage('Script Include [POTUtils] Function [recoverOperationChoices] error: ' + err);
+        }
+
+        return JSON.stringify(arr);
+    },
+
+
+    recoverCounterpartyChoices: function() {
+
+        try {
+
+            var language = this.getParameter('sysparm_language');
+            var query = 'name=x_bdb_5pa_00000221_pinch_operation^element=u_counterparty^language=' + language + '^ORDERBYsequence';
+            var grRecoverChoices = new GlideRecord('sys_choice');
+            grRecoverChoices.addEncodedQuery(query);
+            grRecoverChoices.query();
+            var arr = [];
+            while (grRecoverChoices.next()) {
+                var obj = {
+                    value: grRecoverChoices.getValue('value'),
+                    label: grRecoverChoices.getValue('label')
+                };
+                arr.push(obj);
+            }
+
+        } catch (err) {
+            gs.addErrorMessage('Script Include [POTUtils] Function [recoverCounterpartyChoices] error: ' + err);
+        }
+
+        return JSON.stringify(arr);
+    },
+
+    getOperationsAJAX: function() {
+
+        // CAP: Operation SysID
+        var operation = this.getParameter('sysparm_operation');
+
+        var operations = {
+            isInterbankLeveling: (operation == gs.getProperty('x_bdb_5pa_00000221.pot.operation.interbankLeveling')),
+            isGold: (operation == gs.getProperty('x_bdb_5pa_00000221.pot.operation.gold'))
+        };
+
+        return JSON.stringify(operations);
+    },
+
+    type: 'POTUtils'
+});]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-05-17 17:27:00</sys_created_on>
+        <sys_id>bb08fbae477aa110eb48d921236d4319</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Estrutura SCRIPT INCLUDE</sys_name>
+        <sys_package display_value="Widgets" source="x_883812_widgets">b5adf88a47322110eb48d921236d4396</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Widgets">b5adf88a47322110eb48d921236d4396</sys_scope>
+        <sys_update_name>sys_script_include_bb08fbae477aa110eb48d921236d4319</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-05-17 17:27:00</sys_updated_on>
+    </sys_script_include>
+</record_update>
